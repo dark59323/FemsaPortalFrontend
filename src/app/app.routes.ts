@@ -5,6 +5,6 @@ import { authGuard } from './core/auth/auth.guard';
 export const appRoutes: Routes = [
   { path: 'login', loadComponent: () => import('./pages/login.page').then(m => m.LoginPage) },
   { path: 'orders', canActivate: [authGuard], loadComponent: () => import('./pages/orders.page').then(m => m.OrdersPage) },
-  { path: '', pathMatch: 'full', redirectTo: 'login' },   // 👈 primero login
+  { path: '', pathMatch: 'full', redirectTo: 'login' },
   { path: '**', redirectTo: 'login' },
 ];

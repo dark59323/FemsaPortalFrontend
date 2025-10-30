@@ -2,11 +2,10 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '@/app/core/auth/auth.service';
-import { RouterLink } from '@angular/router';
 
 @Component({
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule],
   template: `
     <header class="h-14 px-4 flex items-center justify-between border-b bg-white">
       <div class="font-semibold">FEMSA • App</div>
