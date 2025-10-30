@@ -60,7 +60,7 @@ import { AuthService } from '@/app/core/auth/auth.service';
 
       <!-- Panel izquierdo (logo) -->
       <div class="order-2 md:order-1 flex items-center justify-center left-panel-bg px-6 py-10 md:p-12">
-        <img src="assets/dist/img/femsa-logo.png" alt="FEMSA Salud Ecuador"
+        <img src="assets/img/femsa-logo.png" alt="FEMSA Salud Ecuador"
              class="max-w-[70%] md:max-w-[85%] h-auto object-contain" loading="eager" decoding="async" />
       </div>
     </div>
