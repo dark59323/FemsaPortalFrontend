@@ -3,6 +3,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { environment } from '@/app/environments/environment';
+import { KeycloakService } from '@/app/core/keycloak/keycloak.service';
 
 export interface LoginResponse {
   access_token: string;
@@ -17,6 +18,7 @@ export class AuthService {
   private http = inject(HttpClient);
   private authCfg = environment.auth;
   private baseUrl = this.authCfg.baseUrl;
+  constructor(private kc: KeycloakService) {}
 
   isAuth(): boolean {
     const token = localStorage.getItem('access_token');
@@ -39,6 +41,7 @@ export class AuthService {
 
   logout() {
     localStorage.removeItem('access_token');
+    return this.kc.logout(window.location.origin + '/login');
   }
 
   private isExpired(token: string): boolean {
@@ -52,4 +55,13 @@ export class AuthService {
       return true;
     }
   }
+  
+  hasRole(role: string, resource: string) { return this.kc.hasAnyRole(resource, [role]); }
+  hasAny(resource: string, roles: string[]) { return this.kc.hasAnyRole(resource, roles); }
+
+  getUsername() { return this.kc.username; }
+  getRealmRoles() { return this.kc.getRealmRoles(); }
+  getClientRoles(clientId: string) { return this.kc.getClientRoles(clientId); }
+  getAllRoles() { return this.kc.getAllRoles(); }
+
 }

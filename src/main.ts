@@ -5,7 +5,7 @@ import { Component } from '@angular/core';
 import { RouterOutlet, provideRouter } from '@angular/router';
 import { provideHttpClient, withInterceptors, HttpInterceptorFn } from '@angular/common/http';
 
-import { appRoutes } from './app/app.routes';
+import { routes } from './app/app.routes';
 
 // Interceptor funcional (Angular 16+)
 const authInterceptor: HttpInterceptorFn = (req, next) => {
@@ -30,7 +30,7 @@ class Root {}
 
 bootstrapApplication(Root, {
   providers: [
-    provideRouter(appRoutes),                  // <- NO es providerRouter
+    provideRouter(routes),                  // <- NO es providerRouter
     provideAnimations(),                       // <- NO es providerAnimations
     provideClientHydration(),
     provideHttpClient(withInterceptors([authInterceptor])),

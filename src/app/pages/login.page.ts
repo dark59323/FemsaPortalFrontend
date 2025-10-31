@@ -86,7 +86,9 @@ export class LoginPage {
       next: (res: LoginResponse) => {
         this.loading.set(false);
         localStorage.setItem('access_token', res.access_token);
-        const returnUrl = this.ar.snapshot.queryParamMap.get('returnUrl') || '/orders';
+
+        // si viene returnUrl úsalo, si no, ve al shell /app (o /app/home)
+        const returnUrl = this.ar.snapshot.queryParamMap.get('returnUrl') || '/app';
         this.router.navigateByUrl(returnUrl);
       },
       error: (err) => {
