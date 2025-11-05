@@ -118,13 +118,16 @@ import { AuthService } from '@/app/core/auth/auth.service';
           </div>
 
           <!-- Logout -->
+          <!-- Logout -->
           <button
             type="button"
-            class="inline-flex items-center gap-2 px-3 h-9 rounded-xl text-sm font-medium text-white bg-brand-700 hover:bg-brand-700 transition-colors
-               focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-700"
+            class="relative inline-flex items-center gap-2 px-3 h-9 rounded-xl text-sm font-medium text-white
+         bg-brand-700 hover:bg-brand-700 transition-colors focus-visible:outline-none
+         focus-visible:ring-2 focus-visible:ring-brand-700 cursor-pointer pointer-events-auto z-50"
             (click)="onLogout($event)"
+            aria-label="Salir"
           >
-            <img src="assets/icons/logout.svg" alt="" class="w-5 h-5" />
+            <img src="assets/icons/logout.svg" alt="" class="w-5 h-5 pointer-events-none" />
             <span class="hidden sm:inline">Salir</span>
           </button>
         </div>
@@ -313,7 +316,6 @@ export class OrdersPage {
 
   onLogout(ev?: Event) {
     ev?.stopPropagation();
-    localStorage.removeItem('access_token');
     this.auth.logout();
   }
 }

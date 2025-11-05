@@ -48,9 +48,20 @@ export class AuthService {
   }
 
   afterLoginStore(res: LoginResponse) {
-    // Guarda token y menú
-    localStorage.setItem(ACCESS_TOKEN_KEY, res.access_token);
-    this.setMenuFromResponse(res.menu_user ?? null);
+    // 1) guarda el token
+    localStorage.setItem('access_token', res.access_token);
+
+    // 2) intenta menú del body
+    let menu = res.menu_user ?? null;
+
+    // 3) si no vino, lo saco del token
+    if (!menu) {
+      const fromToken = this.getClaim<MenuUserRaw>('menu_user');
+      if (fromToken) menu = fromToken;
+    }
+
+    // 4) guarda el menú si existe
+    if (menu) this.setMenuFromResponse(menu);
   }
 
   logout() {
@@ -72,13 +83,25 @@ export class AuthService {
   }
 
   // Roles
-  hasRole(role: string, resource: string) { return this.kc.hasAnyRole(resource, [role]); }
-  hasAny(resource: string, roles: string[]) { return this.kc.hasAnyRole(resource, roles); }
+  hasRole(role: string, resource: string) {
+    return this.kc.hasAnyRole(resource, [role]);
+  }
+  hasAny(resource: string, roles: string[]) {
+    return this.kc.hasAnyRole(resource, roles);
+  }
 
-  getUsername() { return this.kc.username; }
-  getRealmRoles() { return this.kc.getRealmRoles(); }
-  getClientRoles(clientId: string) { return this.kc.getClientRoles(clientId); }
-  getAllRoles() { return this.kc.getAllRoles(); }
+  getUsername() {
+    return this.kc.username;
+  }
+  getRealmRoles() {
+    return this.kc.getRealmRoles();
+  }
+  getClientRoles(clientId: string) {
+    return this.kc.getClientRoles(clientId);
+  }
+  getAllRoles() {
+    return this.kc.getAllRoles();
+  }
 
   get token(): string | null {
     return localStorage.getItem(ACCESS_TOKEN_KEY) ?? null;
@@ -96,7 +119,7 @@ export class AuthService {
       const json = decodeURIComponent(
         atob(padded)
           .split('')
-          .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+          .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
           .join('')
       );
       return JSON.parse(json);
@@ -122,25 +145,61 @@ export class AuthService {
     return 'Usuario';
   }
 
-  getEmail(): string | null { return this.getClaim<string>('email'); }
+  getEmail(): string | null {
+    return this.getClaim<string>('email');
+  }
 
   getInitials(fromName?: string): string {
     const name = (fromName ?? this.getDisplayName()).trim();
     if (!name) return 'U';
     const parts = name.split(/\s+/).slice(0, 2);
-    const ini = parts.map(p => p.charAt(0)).join('').toUpperCase();
+    const ini = parts
+      .map((p) => p.charAt(0))
+      .join('')
+      .toUpperCase();
     return ini || 'U';
   }
 
   // ── Menú desde Keycloak ──────────────────────────────────────────────────────
   setMenuFromResponse(menu?: MenuUserRaw | null) {
-    if (!menu) return;                 // ⬅️ corregido (antes estaba invertido)
+    if (!menu) return; // ⬅️ corregido (antes estaba invertido)
     localStorage.setItem(MENU_STORAGE_KEY, JSON.stringify(menu));
   }
 
   getStoredMenu(): MenuUserRaw | null {
     const raw = localStorage.getItem(MENU_STORAGE_KEY);
     if (!raw) return null;
-    try { return JSON.parse(raw) as MenuUserRaw; } catch { return null; }
+    try {
+      return JSON.parse(raw) as MenuUserRaw;
+    } catch {
+      return null;
+    }
+  }
+
+  // === MENU USER HELPERS (claim) ===============================================
+  hasMenuArea(area: string): boolean {
+    const menu = this.getStoredMenu() ?? {};
+    return !!menu[area]?.length;
+  }
+
+  hasMenuItem(area: string, opts: { path?: string; label?: string }): boolean {
+    const lines = (this.getStoredMenu() ?? {})[area] ?? [];
+    return lines.some((line) => {
+      const [path, label] = (line ?? '').split(',');
+      return (
+        (opts.path && opts.path === path?.trim()) || (opts.label && opts.label === label?.trim())
+      );
+    });
+  }
+
+  /** Devuelve los items del área como objetos { path, label } */
+  getMenuAreaItems(area: string): { path: string; label: string }[] {
+    const lines = (this.getStoredMenu() ?? {})[area] ?? [];
+    return lines
+      .map((line) => {
+        const [path, label] = (line ?? '').split(',');
+        return { path: (path ?? '').trim(), label: (label ?? '').trim() };
+      })
+      .filter((it) => it.path && it.label);
   }
 }

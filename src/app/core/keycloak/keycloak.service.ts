@@ -3,33 +3,43 @@ import Keycloak, { KeycloakConfig, KeycloakInitOptions, KeycloakTokenParsed } fr
 
 @Injectable({ providedIn: 'root' })
 export class KeycloakService {
-    private kc!: Keycloak;
+  private kc!: Keycloak;
 
-    async init(config: KeycloakConfig, options: KeycloakInitOptions = { onLoad: 'login-required', checkLoginIframe: false }) {
-        this.kc = new Keycloak(config);
-        await this.kc.init(options);
-    }
+  async init(
+    config: KeycloakConfig,
+    options: KeycloakInitOptions = { onLoad: 'login-required', checkLoginIframe: false }
+  ) {
+    this.kc = new Keycloak(config);
+    await this.kc.init(options);
+  }
 
-    logout(redirectUri?: string) {
-        return this.kc.logout({ redirectUri });
+  async logout(redirectUri: string = window.location.origin + '/login'): Promise<void> {
+    // ⛑️ Evita el "reading 'logout' of undefined"
+    if (!this.kc) {
+      // fallback: limpia y redirige
+      localStorage.clear();
+      window.location.href = redirectUri;
+      return;
     }
+    await this.kc.logout({ redirectUri });
+  }
 
-    get tokenParsed(): KeycloakTokenParsed | undefined {
-        return this.kc?.tokenParsed;
-    }
+  get tokenParsed(): KeycloakTokenParsed | undefined {
+    return this.kc?.tokenParsed;
+  }
 
-    get username(): string {
-        // 👇 acceso por índice para calmar al TS estricto
-        const u = this.kc?.tokenParsed?.['preferred_username'] as string | undefined;
-        return u ?? '';
-    }
+  get username(): string {
+    // 👇 acceso por índice para calmar al TS estricto
+    const u = this.kc?.tokenParsed?.['preferred_username'] as string | undefined;
+    return u ?? '';
+  }
 
-    hasAnyRole(resource: string, roles: string[]): boolean {
-        if (!roles?.length || !this.kc) return true;
-        const ra = this.kc.resourceAccess?.[resource]?.roles ?? [];
-        return roles.some(r => ra.includes(r));
-    }
-     getRealmRoles(): string[] {
+  hasAnyRole(resource: string, roles: string[]): boolean {
+    if (!roles?.length || !this.kc) return true;
+    const ra = this.kc.resourceAccess?.[resource]?.roles ?? [];
+    return roles.some((r) => ra.includes(r));
+  }
+  getRealmRoles(): string[] {
     return this.kc?.realmAccess?.roles ?? [];
   }
 
@@ -39,8 +49,8 @@ export class KeycloakService {
 
   getAllRoles(): string[] {
     const realm = this.getRealmRoles();
-    const clients = Object.keys(this.kc?.resourceAccess ?? {}).flatMap(
-      c => (this.kc!.resourceAccess![c].roles ?? []).map(r => `${c}:${r}`)
+    const clients = Object.keys(this.kc?.resourceAccess ?? {}).flatMap((c) =>
+      (this.kc!.resourceAccess![c].roles ?? []).map((r) => `${c}:${r}`)
     );
     return [...realm, ...clients];
   }

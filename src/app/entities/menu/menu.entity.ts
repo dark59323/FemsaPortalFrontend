@@ -10,4 +10,5 @@ export interface MenuItem {
   svg?: string;         // path a assets/icons/*.svg
   required?: PermissionSpec; // visible si tiene AL MENOS uno de estos roles
   children?: MenuItem[];
+  menu?: { area: string; path?: string; label?: string }; // info para claims de menú
 }
