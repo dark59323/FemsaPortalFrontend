@@ -15,7 +15,7 @@ export interface LoginResponse {
   expires_in?: number;
   refresh_token?: string;
   scope?: string;
-  menu_user?: MenuUserRaw; // ⬅️ viene en tu JSON
+  menu_user?: MenuUserRaw;
 }
 
 const MENU_STORAGE_KEY = 'menu_user';
@@ -24,9 +24,9 @@ const ACCESS_TOKEN_KEY = 'access_token';
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private http = inject(HttpClient);
-  private authCfg = environment.auth;
-  private baseUrl = this.authCfg.baseUrl;
-  constructor(private kc: KeycloakService) {}
+  private authConfig = environment.auth;
+  private baseUrl = this.authConfig.baseUrl;
+  constructor(private keycloakService: KeycloakService) {}
 
   isAuth(): boolean {
     const token = localStorage.getItem(ACCESS_TOKEN_KEY);
@@ -38,9 +38,9 @@ export class AuthService {
     const body = new HttpParams()
       .set('username', username)
       .set('password', password)
-      .set('client_id', this.authCfg.clientId)
-      .set('client_secret', this.authCfg.clientSecret)
-      .set('realm_name', this.authCfg.realm);
+      .set('client_id', this.authConfig.clientId)
+      .set('client_secret', this.authConfig.clientSecret)
+      .set('realm_name', this.authConfig.realm);
 
     return this.http.post<LoginResponse>(this.baseUrl, body.toString(), {
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -48,26 +48,19 @@ export class AuthService {
   }
 
   afterLoginStore(res: LoginResponse) {
-    // 1) guarda el token
     localStorage.setItem('access_token', res.access_token);
-
-    // 2) intenta menú del body
     let menu = res.menu_user ?? null;
-
-    // 3) si no vino, lo saco del token
     if (!menu) {
       const fromToken = this.getClaim<MenuUserRaw>('menu_user');
       if (fromToken) menu = fromToken;
     }
-
-    // 4) guarda el menú si existe
     if (menu) this.setMenuFromResponse(menu);
   }
 
   logout() {
     localStorage.removeItem(ACCESS_TOKEN_KEY);
     localStorage.removeItem(MENU_STORAGE_KEY);
-    return this.kc.logout(window.location.origin + '/login');
+    return this.keycloakService.logout(window.location.origin + '/login');
   }
 
   private isExpired(token: string): boolean {
@@ -82,32 +75,30 @@ export class AuthService {
     }
   }
 
-  // Roles
   hasRole(role: string, resource: string) {
-    return this.kc.hasAnyRole(resource, [role]);
+    return this.keycloakService.hasAnyRole(resource, [role]);
   }
   hasAny(resource: string, roles: string[]) {
-    return this.kc.hasAnyRole(resource, roles);
+    return this.keycloakService.hasAnyRole(resource, roles);
   }
 
   getUsername() {
-    return this.kc.username;
+    return this.keycloakService.username;
   }
   getRealmRoles() {
-    return this.kc.getRealmRoles();
+    return this.keycloakService.getRealmRoles();
   }
   getClientRoles(clientId: string) {
-    return this.kc.getClientRoles(clientId);
+    return this.keycloakService.getClientRoles(clientId);
   }
   getAllRoles() {
-    return this.kc.getAllRoles();
+    return this.keycloakService.getAllRoles();
   }
 
   get token(): string | null {
     return localStorage.getItem(ACCESS_TOKEN_KEY) ?? null;
   }
 
-  // ── Helpers de claims (opcional) ──────────────────────────────────────────────
   private decodeJwt(t?: string): Record<string, any> | null {
     const token = t ?? this.token;
     if (!token) return null;
@@ -160,9 +151,8 @@ export class AuthService {
     return ini || 'U';
   }
 
-  // ── Menú desde Keycloak ──────────────────────────────────────────────────────
   setMenuFromResponse(menu?: MenuUserRaw | null) {
-    if (!menu) return; // ⬅️ corregido (antes estaba invertido)
+    if (!menu) return;
     localStorage.setItem(MENU_STORAGE_KEY, JSON.stringify(menu));
   }
 
@@ -176,7 +166,6 @@ export class AuthService {
     }
   }
 
-  // === MENU USER HELPERS (claim) ===============================================
   hasMenuArea(area: string): boolean {
     const menu = this.getStoredMenu() ?? {};
     return !!menu[area]?.length;
@@ -192,7 +181,6 @@ export class AuthService {
     });
   }
 
-  /** Devuelve los items del área como objetos { path, label } */
   getMenuAreaItems(area: string): { path: string; label: string }[] {
     const lines = (this.getStoredMenu() ?? {})[area] ?? [];
     return lines

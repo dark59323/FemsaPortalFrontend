@@ -15,10 +15,8 @@ export const permissionGuard: CanActivateFn = (route) => {
   const reqRoles = route.data?.['required'] as { resource: string; roles: string[] } | undefined;
   const reqMenu  = route.data?.['menu'] as { area: string; path?: string; label?: string } | undefined;
 
-  // 1) Roles (opcional)
   const rolesOk = !reqRoles || auth.hasAny(reqRoles.resource, reqRoles.roles);
 
-  // 2) Menu_user (opcional)
   let menuOk = true;
   if (reqMenu?.area) {
     menuOk = reqMenu.path || reqMenu.label

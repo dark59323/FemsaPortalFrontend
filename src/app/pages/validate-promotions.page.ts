@@ -1,11 +1,11 @@
-// src/app/pages/pricing.page.ts
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PromotionsFormComponent } from '@/app/features/promotions/ui/promotions-form.component'; // <-- importa tu formulario
+import { AuthService } from '../core/auth/auth.service';
+import { PromotionsFormComponent } from "../features/promotions/ui/promotions-form.component";
 
 @Component({
   standalone: true,
-  selector: 'app-pricing-page',
+  selector: 'app-validate-promotions',
   imports: [CommonModule, PromotionsFormComponent],
   template: `
     <section class="space-y-6">
@@ -14,4 +14,4 @@ import { PromotionsFormComponent } from '@/app/features/promotions/ui/promotions
     </section>
   `,
 })
-export class PricingPage {}
+export class ValidatePromotionsPage {}

@@ -1,14 +1,14 @@
 export type PermissionSpec = {
-  resource: string;     // p.ej. "framecontroller-backend" (clientId)
-  roles: string[];      // p.ej. ["Pricing", "Users.read"]
+  resource: string;
+  roles: string[];
 };
 
 export interface MenuItem {
   id: string;
   label: string;
   route?: string;
-  svg?: string;         // path a assets/icons/*.svg
-  required?: PermissionSpec; // visible si tiene AL MENOS uno de estos roles
+  svg?: string;
+  required?: PermissionSpec;
   children?: MenuItem[];
-  menu?: { area: string; path?: string; label?: string }; // info para claims de menú
+  menu?: { area: string; path?: string; label?: string };
 }

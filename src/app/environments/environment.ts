@@ -5,5 +5,8 @@ export const environment = {
         clientId: 'framecontroller-backend',
         clientSecret: 'vXuOKR18M0Y2gVcMmfQmv3rCLe0SFTLC',
         realm: 'framecontroller',
-    }
+    },
+    promotions: {
+        apiUrl: 'http://localhost:8080/api/promotions/check',
+    },
 };

@@ -3,54 +3,51 @@ import Keycloak, { KeycloakConfig, KeycloakInitOptions, KeycloakTokenParsed } fr
 
 @Injectable({ providedIn: 'root' })
 export class KeycloakService {
-  private kc!: Keycloak;
+  private keycloak!: Keycloak;
 
   async init(
     config: KeycloakConfig,
     options: KeycloakInitOptions = { onLoad: 'login-required', checkLoginIframe: false }
   ) {
-    this.kc = new Keycloak(config);
-    await this.kc.init(options);
+    this.keycloak = new Keycloak(config);
+    await this.keycloak.init(options);
   }
 
   async logout(redirectUri: string = window.location.origin + '/login'): Promise<void> {
-    // ⛑️ Evita el "reading 'logout' of undefined"
-    if (!this.kc) {
-      // fallback: limpia y redirige
+    if (!this.keycloak) {
       localStorage.clear();
       window.location.href = redirectUri;
       return;
     }
-    await this.kc.logout({ redirectUri });
+    await this.keycloak.logout({ redirectUri });
   }
 
   get tokenParsed(): KeycloakTokenParsed | undefined {
-    return this.kc?.tokenParsed;
+    return this.keycloak?.tokenParsed;
   }
 
   get username(): string {
-    // 👇 acceso por índice para calmar al TS estricto
-    const u = this.kc?.tokenParsed?.['preferred_username'] as string | undefined;
+    const u = this.keycloak?.tokenParsed?.['preferred_username'] as string | undefined;
     return u ?? '';
   }
 
   hasAnyRole(resource: string, roles: string[]): boolean {
-    if (!roles?.length || !this.kc) return true;
-    const ra = this.kc.resourceAccess?.[resource]?.roles ?? [];
+    if (!roles?.length || !this.keycloak) return true;
+    const ra = this.keycloak.resourceAccess?.[resource]?.roles ?? [];
     return roles.some((r) => ra.includes(r));
   }
   getRealmRoles(): string[] {
-    return this.kc?.realmAccess?.roles ?? [];
+    return this.keycloak?.realmAccess?.roles ?? [];
   }
 
   getClientRoles(clientId: string): string[] {
-    return this.kc?.resourceAccess?.[clientId]?.roles ?? [];
+    return this.keycloak?.resourceAccess?.[clientId]?.roles ?? [];
   }
 
   getAllRoles(): string[] {
     const realm = this.getRealmRoles();
-    const clients = Object.keys(this.kc?.resourceAccess ?? {}).flatMap((c) =>
-      (this.kc!.resourceAccess![c].roles ?? []).map((r) => `${c}:${r}`)
+    const clients = Object.keys(this.keycloak?.resourceAccess ?? {}).flatMap((c) =>
+      (this.keycloak!.resourceAccess![c].roles ?? []).map((r) => `${c}:${r}`)
     );
     return [...realm, ...clients];
   }

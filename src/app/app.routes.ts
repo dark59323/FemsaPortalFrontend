@@ -15,20 +15,20 @@ export const routes: Routes = [
         loadComponent: () => import('./pages/dashboard.page').then((m) => m.DashboardPage),
       },
       {
-        path: 'pricing',
+        path: 'pricing/validate-promotions',
         canActivate: [permissionGuard],
         data: {
-          required: { resource: 'framecontroller-backend', roles: ['Pricing'] }, // (opcional)
-          menu: { area: 'PRICING' }, // o { area: 'PRICING', path: '/pricing' } si quieres exacto
+          required: { resource: 'framecontroller-backend', roles: ['Pricing'] },
         },
-        loadComponent: () => import('./pages/pricing.page').then((m) => m.PricingPage),
+        loadComponent: () =>
+          import('./pages/validate-promotions.page').then((m) => m.ValidatePromotionsPage),
       },
       {
-        path: 'pricing/promotions',
+        path: 'pricing/view-promotions',
         canActivate: [permissionGuard],
         data: {
-          required: { resource: 'framecontroller-backend', roles: ['Pricing'] }, // (opcional)
-          menu: { area: 'PRICING', path: '/pricing/promotions' }, // <- de tu token
+          required: { resource: 'framecontroller-backend', roles: ['Pricing'] },
+          menu: { area: 'PRICING' },
         },
         loadComponent: () =>
           import('./features/promotions/ui/promotions-form.component').then(

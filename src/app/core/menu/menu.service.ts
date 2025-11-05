@@ -20,8 +20,6 @@ export class MenuService {
             ? this.auth.hasMenuItem(mi.menu.area, { path: mi.menu.path, label: mi.menu.label })
             : this.auth.hasMenuArea(mi.menu.area)
         );
-
-      // Si declaras ambos, exige ambos; si declaras uno, con ese basta.
       if (mi.required && mi.menu) return byRole && byMenu;
       return byRole && byMenu;
     };
