@@ -1,17 +1,17 @@
+// src/app/pages/pricing.page.ts
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { PromotionsFormComponent } from '@/app/features/promotions/ui/promotions-form.component'; // <-- importa tu formulario
 
 @Component({
   standalone: true,
   selector: 'app-pricing-page',
-  imports: [CommonModule],
+  imports: [CommonModule, PromotionsFormComponent], // <-- agrégalo aquí
   template: `
     <section class="space-y-6">
-      <h1 class="text-2xl font-bold">Pricing</h1>
-      <div class="rounded-xl border bg-white p-4 shadow-sm">
-        <p class="text-gray-600">Contenido restringido por rol <code>Pricing</code>.</p>
-      </div>
+      <h1 class="text-2xl font-bold">VALIDAR PROMOCIONES</h1>
+      <app-promotions-form></app-promotions-form>
     </section>
-  `
+  `,
 })
 export class PricingPage {}
