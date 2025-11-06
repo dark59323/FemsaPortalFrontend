@@ -39,8 +39,6 @@ import { CommonModule } from "@angular/common";
 export class ViewPromotionsPage {
   private auth = inject(AuthService);
   username = this.auth.getUsername();
-
-  // ← adapta si cambia el clientId en tu Keycloak
   clientId = 'framecontroller-backend';
   clientRoles = this.auth.getClientRoles(this.clientId);
 }

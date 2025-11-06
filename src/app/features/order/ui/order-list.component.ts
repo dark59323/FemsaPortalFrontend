@@ -1,4 +1,3 @@
-// src/app/features/order/ui/order-list.component.ts
 import { Component, Input } from '@angular/core';
 import { Order } from '@/app/entities/order/order.model';
 

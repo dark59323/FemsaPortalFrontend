@@ -2,12 +2,6 @@ import { CanActivateFn, Router } from '@angular/router';
 import { inject } from '@angular/core';
 import { AuthService } from '@/app/core/auth/auth.service';
 
-/**
- * Soporta dos esquemas:
- *  1) data.required: { resource: string, roles: string[] }  -> valida roles (como ya tienes)
- *  2) data.menu:      { area: string, path?: string, label?: string } -> valida claim menu_user
- * Si defines ambos, exige que ambos se cumplan.
- */
 export const permissionGuard: CanActivateFn = (route) => {
   const router = inject(Router);
   const auth   = inject(AuthService);

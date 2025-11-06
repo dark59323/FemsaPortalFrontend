@@ -1,6 +1,4 @@
 @import 'tailwindcss';
-
-/* === Variables de marca (ajusta a tu paleta) === */
 :root {
   --bg-page: #f3f5f7;
   --brand-700: #8b0a1a;
@@ -30,10 +28,9 @@
   --input-border-dark: #4b5563;
   --input-border-dark-hover: #6b7280;
   --input-border-dark-focus: #7d899b;
-  --hover-dark: #374151; /* Hover para elementos interactivos en oscuro *//* Usado para hover en elementos interactivos */
+  --hover-dark: #374151; /* Hover para elementos interactivos en oscuro */
 }
 
-/* === Helpers semánticos === */
 .bg-bg-page {
   background: var(--bg-page);
 }
@@ -126,13 +123,11 @@
   color: var(--text-dark-primary, #e0e0e0);
 }
 
-/* Para el HEADER */
 .dark header {
   background-color: var(--surface-dark-opacity, rgba(31, 41, 55, 0.7));
   border-color: var(--border-dark, #4b5563);
 }
 
-/* Para la barra de búsqueda en el HEADER */
 .dark header input[type="search"] {
   background-color: var(--input-bg-dark-opacity, rgba(55, 65, 81, 0.7));
   border-color: var(--input-border-dark, #4b5563);
@@ -149,32 +144,26 @@
   border-color: var(--input-border-dark-focus, #6b7280);
 }
 
-/* Para el MAIN CONTENT */
 .dark main {
   background-color: var(--bg-11coolgray);
   color: var(--text-dark-primary, #e0e0e0);
 }
 
-/* Para la TARJETA principal dentro de MAIN (donde está el formulario) */
-/* (Esta regla ya la pusimos en el HTML, pero la dejamos por si acaso) */
 .dark main > div.rounded-2xl {
   background-color: var(--surface-dark, #2b3543);
   border-color: var(--border-dark, #4b5563);
   color: var(--text-dark-primary, #e0e0e0);
 }
 
-/* Para los labels y texto en las tarjetas */
 .dark main label {
   color: var(--text-dark-secondary, #a0a7b3);
 }
 
-/* Para los INPUTS del formulario */
 .dark main input:not([type="search"]),
 .dark main select {
   background-color: var(--input-bg-dark, #374151);
   border-color: var(--input-border-dark, #4b5563);
   color: var(--text-dark-primary, #e0e0e0);
-  /* Esto ayuda a que la flecha del dropdown se vea en Firefox */
   appearance: none; 
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%239ca3af' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
   background-position: right 0.5rem center;
@@ -199,7 +188,6 @@
   border-color: var(--input-border-dark-focus, #7d899b);
 }
 
-/* Para el texto de Breadcrumb */
 .dark nav[aria-label="Breadcrumb"] ol li {
   color: var(--text-dark-secondary, #9ca3af);
 }
@@ -210,7 +198,6 @@
   color: var(--text-dark-primary, #e0e0e0);
 }
 
-/* Botones del formulario */
 .dark main button.border {
   border-color: var(--border-dark, #4b5563);
   color: var(--text-dark-primary, #e0e0e0);
@@ -219,7 +206,6 @@
   background-color: var(--hover-dark, #374151);
 }
 
-/* Modal de estado */
 .dark .fixed.inset-0.z-50 {
   background-color: rgba(0, 0, 0, 0.7);
 }

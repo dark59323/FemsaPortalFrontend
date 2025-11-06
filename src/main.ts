@@ -24,14 +24,14 @@ const authInterceptor: HttpInterceptorFn = (req, next) => {
   standalone: true,
   selector: 'app-root',
   imports: [RouterOutlet],
-  template: `<router-outlet />`, // <- usa backticks
+  template: `<router-outlet />`,
 })
 class Root {}
 
 bootstrapApplication(Root, {
   providers: [
-    provideRouter(routes),                  // <- NO es providerRouter
-    provideAnimations(),                       // <- NO es providerAnimations
+    provideRouter(routes),
+    provideAnimations(),
     provideClientHydration(),
     provideHttpClient(withInterceptors([authInterceptor])),
   ]

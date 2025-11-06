@@ -1,4 +1,3 @@
-// src/app/core/theme/theme.service.ts
 import { Injectable, effect, signal } from '@angular/core';
 
 type Theme = 'light' | 'dark';
@@ -7,12 +6,9 @@ type Theme = 'light' | 'dark';
   providedIn: 'root'
 })
 export class ThemeService {
-  // Signal para el tema actual, inicializado desde localStorage o por defecto 'light'
   readonly theme = signal<Theme>(this.readTheme());
 
   constructor() {
-    // Cada vez que 'theme' cambia, actualiza la clase 'dark' en el body
-    // y guarda la preferencia en localStorage.
     effect(() => {
       const currentTheme = this.theme();
       if (typeof document !== 'undefined') {
@@ -27,12 +23,10 @@ export class ThemeService {
     });
   }
 
-  // Alterna entre 'light' y 'dark'
   toggleTheme() {
     this.theme.update(current => (current === 'light' ? 'dark' : 'light'));
   }
 
-  // Lee la preferencia de tema desde localStorage
   private readTheme(): Theme {
     if (typeof localStorage !== 'undefined') {
       const storedTheme = localStorage.getItem('theme');

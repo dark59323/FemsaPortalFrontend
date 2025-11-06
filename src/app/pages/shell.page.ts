@@ -437,7 +437,6 @@ export class ShellPage {
   public userEmail = this.auth.getEmail();
 
   constructor() {
-    // Persistir automáticamente el estado del sidebar
     effect(() => {
       localStorage.setItem('sb-collapsed', JSON.stringify(this.collapsed()));
     });

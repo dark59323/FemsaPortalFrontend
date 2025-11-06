@@ -1,4 +1,3 @@
-// src/app/features/order/app/order.facade.ts
 import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject, finalize } from 'rxjs';
 import { Order } from '@/app/entities/order/order.model';
