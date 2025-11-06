@@ -35,14 +35,21 @@ type UiState = 'idle' | 'loading' | 'success' | 'error';
 
         <div class="grid gap-4 sm:grid-cols-2">
           <div *ngFor="let f of fieldNames">
-            <label class="mb-1 block text-sm font-medium text-gray-700">{{ f }}</label>
+            <label class="mb-1 block text-sm font-medium text-gray-700" [for]="'field-' + f">
+              {{ f }}
+            </label>
             <input
               class="w-full rounded-lg border border-gray-300 bg-gray-50 px-3 py-2 text-gray-900 outline-none transition
                      hover:border-gray-400 focus:border-gray-400 focus:bg-white focus:ring-4 focus:ring-black/10"
               [formControlName]="f"
               [attr.placeholder]="placeholders[f]"
               autocomplete="off"
-            />
+              [id]="'field-' + f"
+              [attr.list]="'list-' + f"  />
+            
+            <datalist [id]="'list-' + f">
+              <option *ngFor="let option of fieldOptions[f]" [value]="option"></option>
+            </datalist>
           </div>
         </div>
 
@@ -250,4 +257,16 @@ export class PromotionsFormComponent {
     if (s === 'error') return 'Ocurrió un problema';
     return 'Diálogo';
   }
+  fieldOptions: Record<string, string[]> = {
+    mensajeExt: ['N'],
+    paramUno: ["'ITEMS ACMALETAS'"],
+    paramDos: ["'1234'"],
+    procesoEjecuta: ['CHECKPROMOTION-F'],
+    origenListPdv: ['GEO'],
+    ubicacion: ['CAJA'],
+    empresa: ['1'],
+    farmacia: ['1,72243'],
+    pos: ['0'],
+    mail: ['S'],
+  };
 }

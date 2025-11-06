@@ -4,13 +4,14 @@ import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { SidebarComponent } from '@/app/pages/sidebar.component';
 import { AuthService } from '@/app/core/auth/auth.service';
+import { ThemeService } from '@/app/core/theme/theme.service';
 
 @Component({
   standalone: true,
   imports: [CommonModule, RouterOutlet, SidebarComponent],
   template: `
     <div
-      class="min-h-dvh grid grid-rows-[56px_1fr] bg-[#f4f5f7] text-gray-900 selection:bg-brand-700/10"
+      class="h-dvh grid grid-rows-[56px_1fr] bg-[#f4f5f7] text-gray-900 selection:bg-brand-700/10"
     >
       <!-- HEADER -->
       <header
@@ -75,6 +76,55 @@ import { AuthService } from '@/app/core/auth/auth.service';
 
         <!-- Actions -->
         <div class="ml-auto flex items-center gap-2 md:gap-3">
+          <button
+            type="button"
+            class="relative inline-flex h-7 w-12 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-brand-700 focus:ring-offset-2"
+            [ngClass]="{
+              'bg-gray-200': themeSvc.theme() === 'light',
+              'bg-brand-700': themeSvc.theme() === 'dark'
+            }"
+            role="switch"
+            [attr.aria-checked]="themeSvc.theme() === 'dark'"
+            aria-label="Toggle theme"
+            (click)="themeSvc.toggleTheme()"
+          >
+            <span class="sr-only">Toggle theme</span>
+            <span
+              aria-hidden="true"
+              class="pointer-events-none relative inline-block h-6 w-6 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"
+              [ngClass]="{
+                'translate-x-5': themeSvc.theme() === 'dark',
+                'translate-x-0': themeSvc.theme() === 'light'
+              }"
+            >
+              <span
+                [ngClass]="{
+                  'opacity-0 duration-100 ease-out': themeSvc.theme() === 'dark',
+                  'opacity-100 duration-200 ease-in': themeSvc.theme() === 'light'
+                }"
+                class="absolute inset-0 flex h-full w-full items-center justify-center transition-opacity"
+              >
+                <img
+                  src="assets/icons/light_mode.svg"
+                  alt="Light mode icon"
+                  class="h-4 w-4 text-gray-400"
+                />
+              </span>
+              <span
+                [ngClass]="{
+                  'opacity-100 duration-200 ease-in': themeSvc.theme() === 'dark',
+                  'opacity-0 duration-100 ease-out': themeSvc.theme() === 'light'
+                }"
+                class="absolute inset-0 flex h-full w-full items-center justify-center transition-opacity"
+              >
+                <img
+                  src="assets/icons/dark_mode.svg"
+                  alt="Dark mode icon"
+                  class="h-4 w-4 text-gray-600"
+                />
+              </span>
+            </span>
+          </button>
           <!-- Notificaciones -->
           <button
             type="button"
@@ -266,6 +316,7 @@ export class OrdersPage {
   public initials = this.auth.getInitials(this.displayName);
   collapsed = signal<boolean>(this.readCollapsed());
   drawerOpen = signal(false);
+  public themeSvc = inject(ThemeService);
 
   constructor() {
     // Persistir automáticamente el estado del sidebar

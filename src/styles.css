@@ -1,11 +1,11 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 /* === Variables de marca (ajusta a tu paleta) === */
 :root {
   --bg-page: #f3f5f7;
-  --brand-700: #8B0A1A;
+  --brand-700: #8b0a1a;
   /* rojo oscuro FEMSA aprox */
-  --brand-600: #A01222;
+  --brand-600: #a01222;
   --brand-50: #fff5f5;
   --card-bg: #ffffff;
   --ink: #0f172a;
@@ -16,8 +16,21 @@
   --bg-coolgray-7: rgb(151, 153, 155);
   --bg-coolgray-11: rgb(83, 86, 90);
 
-  --shadow-card: 0 25px 55px rgba(0, 0, 0, .15), 0 15px 25px rgba(0, 0, 0, .08);
-  --shadow-card-hero: 0 60px 120px rgba(18, 25, 38, .28);
+  --shadow-card: 0 25px 55px rgba(0, 0, 0, 0.15), 0 15px 25px rgba(0, 0, 0, 0.08);
+  --shadow-card-hero: 0 60px 120px rgba(18, 25, 38, 0.28);
+
+  --bg-11coolgray: rgb(217, 217, 214); /* El gris más oscuro que quieres de fondo */
+  --surface-dark: #2b3543; /* Un gris un poco más claro para tarjetas/formularios */
+  --surface-dark-opacity: rgba(31, 41, 55, 0.7); /* Con opacidad para el header */
+  --text-dark-primary: #e0e0e0; /* Texto principal en oscuro */
+  --text-dark-secondary: #9ca3af; /* Texto secundario en oscuro */
+  --border-dark: #4b5563; /* Borde oscuro */
+  --input-bg-dark: #374151; /* Fondo de input oscuro */
+  --input-bg-dark-opacity: rgba(55, 65, 81, 0.7);
+  --input-border-dark: #4b5563;
+  --input-border-dark-hover: #6b7280;
+  --input-border-dark-focus: #7d899b;
+  --hover-dark: #374151; /* Hover para elementos interactivos en oscuro *//* Usado para hover en elementos interactivos */
 }
 
 /* === Helpers semánticos === */
@@ -75,7 +88,7 @@
 
 .left-panel-bg::before,
 .left-panel-bg::after {
-  content: "";
+  content: '';
   position: absolute;
   left: 0;
   right: 0;
@@ -86,16 +99,129 @@
 
 .left-panel-bg::before {
   top: 0;
-  background: linear-gradient(180deg, color-mix(in srgb, var(--bg-coolgray-7) 90%, transparent), transparent);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--bg-coolgray-7) 90%, transparent),
+    transparent
+  );
 }
 
 .left-panel-bg::after {
   bottom: 0;
-  background: linear-gradient(180deg, transparent, color-mix(in srgb, var(--bg-coolgray-7) 90%, transparent));
+  background: linear-gradient(
+    180deg,
+    transparent,
+    color-mix(in srgb, var(--bg-coolgray-7) 90%, transparent)
+  );
 }
 
 .left-panel-bg img {
   position: relative;
   z-index: 1;
   background: transparent;
+}
+
+.dark {
+  /* Fondo general de la aplicación */
+  background-color: var(--bg-11coolgray); /* El gris oscuro que deseas */
+  color: var(--text-dark-primary, #e0e0e0); /* Texto principal en oscuro */
+
+  /* Para el HEADER */
+  & header {
+    background-color: var(--surface-dark-opacity, rgba(31, 41, 55, 0.7)); /* Fondo oscuro con transparencia para efecto blur */
+    border-color: var(--border-dark, #4b5563); /* Borde más oscuro */
+  }
+
+  /* Para la barra de búsqueda en el HEADER */
+  & header input[type="search"] {
+    background-color: var(--input-bg-dark-opacity, rgba(55, 65, 81, 0.7));
+    border-color: var(--input-border-dark, #4b5563);
+    color: var(--text-dark-primary, #e0e0e0);
+    &::placeholder {
+      color: var(--text-dark-secondary, #9ca3af);
+    }
+    &:hover {
+      background-color: var(--input-bg-dark-hover, #374151);
+    }
+    &:focus {
+      background-color: var(--input-bg-dark, #374151);
+      border-color: var(--input-border-dark-focus, #6b7280); /* Otro gris para focus */
+    }
+  }
+
+  /* Para el MAIN CONTENT (el área blanca que se vuelve gris oscura) */
+  & main {
+    background-color: var(--bg-11coolgray); /* Mismo gris oscuro que el fondo general */
+    color: var(--text-dark-primary, #e0e0e0); /* Texto claro */
+  }
+
+  /* Para la TARJETA principal dentro de MAIN (donde está el formulario) */
+  & main > div.rounded-2xl { /* Asegúrate de que esta clase apunte a tu tarjeta del formulario */
+    background-color: var(--surface-dark, #2b3543); /* Un gris un poco más claro que el fondo general para el formulario */
+    border-color: var(--border-dark, #4b5563);
+    color: var(--text-dark-primary, #e0e0e0);
+  }
+
+  /* Para los labels y texto en las tarjetas */
+  & main label {
+    color: var(--text-dark-secondary, #a0a7b3); /* Color de texto más tenue para labels */
+  }
+
+  /* Para los INPUTS del formulario */
+  & main input:not([type="search"]) { /* Excluye el input de búsqueda del header */
+    background-color: var(--input-bg-dark, #374151); /* Fondo oscuro para inputs */
+    border-color: var(--input-border-dark, #4b5563);
+    color: var(--text-dark-primary, #e0e0e0);
+    &::placeholder {
+      color: var(--text-dark-secondary, #9ca3af);
+    }
+    &:hover {
+      border-color: var(--input-border-dark-hover, #6b7280);
+      background-color: var(--input-bg-dark-hover, #3c4a5c);
+    }
+    &:focus {
+      background-color: var(--input-bg-dark, #374151);
+      border-color: var(--input-border-dark-focus, #7d899b);
+    }
+  }
+
+  /* Para el texto de Breadcrumb */
+  & nav[aria-label="Breadcrumb"] ol li {
+    color: var(--text-dark-secondary, #9ca3af);
+    &:first-child { /* "Inicio" */
+        color: var(--text-dark-secondary, #9ca3af);
+    }
+    &.text-gray-800 { /* El ítem activo, "Órdenes" */
+      color: var(--text-dark-primary, #e0e0e0);
+    }
+  }
+  
+  /* Botones del formulario */
+  & main button.border { /* Botones "Restaurar" y "Cancelar" */
+    border-color: var(--border-dark, #4b5563);
+    color: var(--text-dark-primary, #e0e0e0);
+    &:hover {
+      background-color: var(--hover-dark, #374151);
+    }
+  }
+
+  /* Modal de estado */
+  & .fixed.inset-0.z-50 { /* El overlay del modal */
+    background-color: rgba(0, 0, 0, 0.7); /* Puedes hacer el overlay más oscuro o dejarlo así */
+  }
+  & .fixed.inset-0.z-50 > div.rounded-xl { /* El panel del modal */
+    background-color: var(--surface-dark, #2b3543);
+    color: var(--text-dark-primary, #e0e0e0);
+  }
+  & .fixed.inset-0.z-50 p.text-gray-600 { /* Texto secundario del modal */
+    color: var(--text-dark-secondary, #a0a7b3);
+  }
+
+  & .fixed.inset-0.z-50 button.rounded-lg.border {
+    border-color: var(--border-dark, #4b5563);
+    color: var(--text-dark-primary, #e0e0e0);
+    &:hover {
+      background-color: var(--hover-dark, #374151);
+    }
+  }
 }
