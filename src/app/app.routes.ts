@@ -8,7 +8,7 @@ export const routes: Routes = [
   {
     path: 'app',
     canActivate: [authGuard],
-    loadComponent: () => import('./pages/orders.page').then((m) => m.OrdersPage),
+    loadComponent: () => import('./pages/shell.page').then((m) => m.ShellPage),
     children: [
       {
         path: 'dashboard',
