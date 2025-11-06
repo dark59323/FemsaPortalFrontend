@@ -8,7 +8,7 @@ type MenuItem = {
   route?: string | null;
   svg?: string;
   children?: MenuItem[];
-  id?: string; // opcional si ya lo tienes en tu modelo
+  id?: string;
 };
 
 @Component({
@@ -18,7 +18,6 @@ type MenuItem = {
   template: `
     <nav class="mt-1 text-sm">
       <ng-container *ngFor="let m of menu(); trackBy: trackByLabel">
-        <!-- ÍTEM SIN HIJOS -->
         <a
           *ngIf="!m.children?.length"
           [routerLink]="to(m.route)"
@@ -39,7 +38,6 @@ type MenuItem = {
         </a>
 
         <div *ngIf="m.children?.length" class="mx-2 my-2">
-          <!-- CABECERA IGUAL A LOS LINKS -->
           <button
             type="button"
             (click)="toggle(openKey(m))"
@@ -63,7 +61,6 @@ type MenuItem = {
             </svg>
           </button>
 
-          <!-- DESPLEGABLE -->
           <div
             class="overflow-hidden transition-[max-height] duration-300 ease-in-out"
             [style.maxHeight.px]="!collapsed && isOpen(openKey(m)) ? 500 : 0"
@@ -90,18 +87,13 @@ export class SidebarComponent {
 
   private readonly menuSvc = inject(MenuService);
   readonly menu = this.menuSvc.filtered as () => MenuItem[];
-
-  // Conjunto de grupos abiertos (acordeón simple)
   private open = signal<Set<string>>(new Set());
-
-  // Clave estable para cada grupo (usa id si la tienes; si no, usa label)
   openKey(m: MenuItem): string {
     return m.id ?? m.label;
   }
 
   toggle(key: string) {
-    // Si quieres acordeón exclusivo, descomenta las 2 líneas y elimina el Set copy:
-    // this.open.set(new Set(this.open().has(key) ? [] : [key]));
+
     const next = new Set(this.open());
     next.has(key) ? next.delete(key) : next.add(key);
     this.open.set(next);
@@ -113,9 +105,9 @@ export class SidebarComponent {
 
   to(route?: string | null) {
   if (!route) return '/app';
-  if (route.startsWith('/app')) return route;   // ya es absoluta
-  const clean = route.replace(/^\/+/, '');      // quita / inicial
-  return `/app/${clean}`;                       // => /app/xxx/yyy
+  if (route.startsWith('/app')) return route;
+  const clean = route.replace(/^\/+/, '');
+  return `/app/${clean}`;
 }
 
 

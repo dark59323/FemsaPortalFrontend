@@ -12,7 +12,6 @@ import { AuthService, LoginResponse } from '@/app/core/auth/auth.service';
   template: `
     <div class="min-h-dvh bg-bg-page flex flex-col">
       <div class="grid min-h-dvh grid-rows-[1fr_auto] md:grid-rows-1 md:grid-cols-2">
-        <!-- Panel derecho (form) -->
         <div
           class="order-1 md:order-2 flex items-center justify-center bg-brand-700 px-6 py-8 md:px-20 md:py-16"
         >
@@ -88,8 +87,6 @@ import { AuthService, LoginResponse } from '@/app/core/auth/auth.service';
             </form>
           </div>
         </div>
-
-        <!-- Panel izquierdo (logo) -->
         <div
           class="order-2 md:order-1 flex items-center justify-center left-panel-bg px-6 py-10 md:p-12"
         >
@@ -136,11 +133,7 @@ export class LoginPage {
     this.auth.login(username ?? '', password ?? '').subscribe({
       next: (res: LoginResponse) => {
         this.loading.set(false);
-
-        // ✅ Guarda token + menu_user (del body o, si no vino, lo extrae del token)
         this.auth.afterLoginStore(res);
-
-        // ✅ Redirige
         const returnUrl = this.ar.snapshot.queryParamMap.get('returnUrl') || '/app';
         this.router.navigateByUrl(returnUrl);
       },

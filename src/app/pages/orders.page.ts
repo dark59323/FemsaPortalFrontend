@@ -13,11 +13,9 @@ import { ThemeService } from '@/app/core/theme/theme.service';
     <div
       class="h-dvh grid grid-rows-[56px_1fr] bg-[#f4f5f7] text-gray-900 selection:bg-brand-700/10"
     >
-      <!-- HEADER -->
       <header
         class="sticky top-0 z-40 h-14 px-3 md:px-6 flex items-center gap-2 md:gap-4 border-b bg-white/70 backdrop-blur supports-[backdrop-filter]:bg-white/60"
       >
-        <!-- Menu / collapse -->
         <button
           class="size-9 grid place-items-center rounded-xl hover:bg-gray-100 active:scale-95 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-700"
           type="button"
@@ -26,7 +24,6 @@ import { ThemeService } from '@/app/core/theme/theme.service';
           aria-controls="mobile-drawer"
           [attr.aria-expanded]="isMobile() && drawerOpen() ? 'true' : 'false'"
         >
-          <!-- ícono -->
           <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none">
             <path
               d="M4 6h16M4 12h16M4 18h16"
@@ -37,7 +34,6 @@ import { ThemeService } from '@/app/core/theme/theme.service';
           </svg>
         </button>
 
-        <!-- Branding -->
         <div class="font-semibold tracking-wide flex items-center gap-2">
           <div class="flex items-center justify-center py-8 md:py-12">
             <img
@@ -50,7 +46,6 @@ import { ThemeService } from '@/app/core/theme/theme.service';
           </div>
         </div>
 
-        <!-- Search (desktop) -->
         <div class="ml-2 hidden md:flex items-center flex-1 max-w-xl">
           <label class="relative w-full">
             <span
@@ -74,7 +69,6 @@ import { ThemeService } from '@/app/core/theme/theme.service';
           </label>
         </div>
 
-        <!-- Actions -->
         <div class="ml-auto flex items-center gap-2 md:gap-3">
           <button
             type="button"
@@ -125,7 +119,6 @@ import { ThemeService } from '@/app/core/theme/theme.service';
               </span>
             </span>
           </button>
-          <!-- Notificaciones -->
           <button
             type="button"
             class="relative inline-grid place-items-center size-9 rounded-xl hover:bg-gray-100 transition
@@ -147,7 +140,6 @@ import { ThemeService } from '@/app/core/theme/theme.service';
             >
           </button>
 
-          <!-- Perfil -->
           <div class="relative">
             <button
               type="button"
@@ -164,11 +156,8 @@ import { ThemeService } from '@/app/core/theme/theme.service';
                 />
               </svg>
             </button>
-            <!-- aquí podrías montar un dropdown real si lo necesitas -->
           </div>
 
-          <!-- Logout -->
-          <!-- Logout -->
           <button
             type="button"
             class="relative inline-flex items-center gap-2 px-3 h-9 rounded-xl text-sm font-medium text-white
@@ -183,17 +172,14 @@ import { ThemeService } from '@/app/core/theme/theme.service';
         </div>
       </header>
 
-      <!-- LAYOUT -->
       <div
         class="z-0 grid grid-cols-1 md:grid-cols-[var(--sbw)_1fr] min-h-0"
         [ngStyle]="{ '--sbw': collapsed() ? '80px' : '264px' }"
       >
-        <!-- SIDEBAR DESKTOP -->
         <aside
           class="relative hidden md:flex h-full text-gray-50 will-change-[width] transition-[width] duration-300 overflow-hidden"
         >
-          <!-- layer color/gradiente -->
-          <!-- capa de color -->
+
           <div
             class="absolute inset-y-0 left-0 z-0 pointer-events-none transition-[width] duration-300"
             [style.width]="'var(--sbw)'"
@@ -204,7 +190,6 @@ import { ThemeService } from '@/app/core/theme/theme.service';
             ></div>
           </div>
 
-          <!-- contenido -->
           <div
             class="relative z-10 flex flex-col justify-between transition-[width] duration-300"
             [style.--sbw]="collapsed() ? '5rem' : '16.5rem'"
@@ -234,16 +219,13 @@ import { ThemeService } from '@/app/core/theme/theme.service';
           </div>
         </aside>
 
-        <!-- DRAWER MÓVIL -->
         <div class="md:hidden fixed inset-0 z-50" *ngIf="drawerOpen()">
-          <!-- overlay -->
           <button
             class="absolute inset-0 bg-black/50 backdrop-blur-[1px]"
             (click)="closeDrawer()"
             aria-label="Cerrar overlay"
           ></button>
 
-          <!-- panel -->
           <div
             id="mobile-drawer"
             role="dialog"
@@ -268,9 +250,7 @@ import { ThemeService } from '@/app/core/theme/theme.service';
           </div>
         </div>
 
-        <!-- MAIN -->
         <main class="p-4 sm:p-6 lg:p-8 overflow-auto">
-          <!-- breadcrumb + título (opcional) -->
           <div class="mb-4 md:mb-6 flex items-center justify-between gap-3">
             <nav aria-label="Breadcrumb" class="text-sm text-gray-500">
               <ol class="flex items-center gap-1">
@@ -279,7 +259,6 @@ import { ThemeService } from '@/app/core/theme/theme.service';
                 <li class="text-gray-800 font-medium">Órdenes</li>
               </ol>
             </nav>
-            <!-- Search compacto en móvil -->
             <label class="relative w-44 sm:hidden">
               <span
                 class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400"
@@ -319,7 +298,6 @@ export class OrdersPage {
   public themeSvc = inject(ThemeService);
 
   constructor() {
-    // Persistir automáticamente el estado del sidebar
     effect(() => {
       localStorage.setItem('sb-collapsed', JSON.stringify(this.collapsed()));
     });
