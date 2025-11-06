@@ -19,9 +19,9 @@
   --shadow-card: 0 25px 55px rgba(0, 0, 0, 0.15), 0 15px 25px rgba(0, 0, 0, 0.08);
   --shadow-card-hero: 0 60px 120px rgba(18, 25, 38, 0.28);
 
-  --bg-11coolgray: rgb(217, 217, 214); /* El gris más oscuro que quieres de fondo */
+  --bg-11coolgray: rgba(31, 41, 55, 0.7); /* El gris más oscuro que quieres de fondo */
   --surface-dark: #2b3543; /* Un gris un poco más claro para tarjetas/formularios */
-  --surface-dark-opacity: rgba(31, 41, 55, 0.7); /* Con opacidad para el header */
+  --surface-dark-opacity:rgb(217, 217, 214); /* Con opacidad para el header */
   --text-dark-primary: #e0e0e0; /* Texto principal en oscuro */
   --text-dark-secondary: #9ca3af; /* Texto secundario en oscuro */
   --border-dark: #4b5563; /* Borde oscuro */
